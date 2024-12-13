@@ -19,22 +19,22 @@ notes = {
 }
 
 def fret_separator():
-    result = "   ||---------------------------------------------" \
+    result = "    ||---------------------------------------------" \
              "--------------|"
     return result
 
 def fret_numbers():
-    result = "   || 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |" \
+    result = "    || 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |" \
              " 10 | 11 | 12 |"
     return result
 
 def fret_dots():
-    result = "   ||           *         *         * " \
+    result = "    ||           *         *         * " \
              "             *         *  |"
     return result
 
 def notes_per_string(note, count):
-    result = " {}|".format(note)
+    result = " {} |".format(note)
     note = notes[note]
     for i in range(1, count):
         result += "| {} ".format(note)
@@ -68,7 +68,7 @@ def main():
     print(fret_separator())
     print(fret_numbers())
     print(fret_separator())
-    for note in notes:
+    for note in notes[::-1]:
         print(notes_per_string(note, 13))
     print(fret_separator())
     print(fret_dots())
