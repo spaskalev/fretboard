@@ -18,12 +18,28 @@ notes = {
     "G#" : "A ",
 }
 
+def fret_separator():
+    result = "   ||---------------------------------------------" \
+             "--------------|"
+    return result
+
+def fret_numbers():
+    result = "   || 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |" \
+             " 10 | 11 | 12 |"
+    return result
+
+def fret_dots():
+    result = "   ||           *         *         * " \
+             "             *         *  |"
+    return result
+
 def notes_per_string(note, count):
     result = " {}|".format(note)
     note = notes[note]
     for i in range(1, count):
         result += "| {} ".format(note)
         note = notes[note]
+    result += "|"
     return result
 
 def to_note(candidate):
@@ -48,8 +64,15 @@ def main():
             c = c + "#"
             sharp = False
         notes.insert(0, to_note(c))
+
+    print(fret_separator())
+    print(fret_numbers())
+    print(fret_separator())
     for note in notes:
         print(notes_per_string(note, 13))
+    print(fret_separator())
+    print(fret_dots())
+    print(fret_separator())
 
 if __name__ == "__main__":
     main()
