@@ -63,7 +63,10 @@ def main():
         if sharp:
             c = c + "#"
             sharp = False
-        notes.insert(0, to_note(c))
+        try:
+            notes.insert(0, to_note(c))
+        except:
+            pass
 
     print(fret_separator())
     print(fret_numbers())
