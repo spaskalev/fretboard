@@ -1,22 +1,41 @@
-#!/usr/bin/env python3
+	#!/usr/bin/env python3
 
+import itertools
 import sys
 import os
 
-notes = {
-    "A " : "A#",
-    "A#" : "B ",
-    "B " : "C ",
-    "C " : "C#",
-    "C#" : "D ",
-    "D " : "D#",
-    "D#" : "E ",
-    "E " : "F ",
-    "F " : "F#",
-    "F#" : "G ",
-    "G " : "G#",
-    "G#" : "A ",
-}
+notes = [
+    "A ",
+    "A#",
+    "B ",
+    "C ",
+    "C#",
+    "D ",
+    "D#",
+    "E ",
+    "F ",
+    "F#",
+    "G ",
+    "G#",
+]
+
+degrees = [
+    "1 ",
+    "b2",
+    "2 ",
+    "b3",
+    "3 ",
+    "4 ",
+    "b5",
+    "5 ",
+    "b6",
+    "6 ",
+    "b7",
+    "7 ",
+]
+
+use_degrees = False
+starting_note = ''
 
 def fret_separator():
     result = "    ||---------------------------------------------" \
@@ -35,10 +54,37 @@ def fret_dots():
 
 def notes_per_string(note, count):
     result = " {} |".format(note)
-    note = notes[note]
+    cnotes = itertools.cycle(notes)
+    while note != next(cnotes):
+        pass
+    note = next(cnotes)
     for i in range(1, count):
         result += "| {} ".format(note)
-        note = notes[note]
+        note = next(cnotes)
+    result += "|"
+    return result
+
+def degrees_per_string(starting_note, note, count):
+    sindex = notes.index(starting_note)
+    cindex = notes.index(note)
+
+    index = 0
+    if sindex > cindex:
+        index = 12 - (sindex - cindex)
+    if cindex > sindex:
+        index = cindex - sindex
+
+    degree = ''
+    cdegrees = itertools.cycle(degrees)
+    for i in range(1, index+1):
+        degree = next(cdegrees)
+        pass
+
+    degree = next(cdegrees)
+    result = " {} |".format(degree)
+    for i in range(1, count):
+        degree = next(cdegrees)
+        result += "| {} ".format(degree)
     result += "|"
     return result
 
@@ -52,10 +98,12 @@ def to_note(candidate):
     raise Exception("Unknown note")
 
 def main():
-    if len(sys.argv) != 2:
-        raise Exception("Unknown or missing parameter")
+    if sys.argv[1] == "-d":
+        use_degrees = True
+        sys.argv[1] = sys.argv[2]
+ 
     sharp = False
-    notes = []
+    input = []
     for c in sys.argv[1][::-1]: # read it backwards
         if c == "#":
             sharp = True
@@ -64,18 +112,30 @@ def main():
             c = c + "#"
             sharp = False
         try:
-            notes.insert(0, to_note(c))
+            input.insert(0, to_note(c))
         except:
             pass
 
     print(fret_separator())
     print(fret_numbers())
     print(fret_separator())
-    for note in notes[::-1]:
+    for note in input[::-1]:
         print(notes_per_string(note, 13))
     print(fret_separator())
     print(fret_dots())
     print(fret_separator())
+
+    if use_degrees:
+        print()
+        starting_note = input[0]
+        print(fret_separator())
+        print(fret_numbers())
+        print(fret_separator())
+        for note in input[::-1]:
+            print(degrees_per_string(starting_note, note, 13))
+        print(fret_separator())
+        print(fret_dots())
+        print(fret_separator())
 
 if __name__ == "__main__":
     main()
