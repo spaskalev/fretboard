@@ -94,7 +94,7 @@ def get_intervals(note_input):
     ordered_distances = [x for x in all_distances]
     ordered_distances.sort()
     named_intervals = [intervals[x] for x in ordered_distances]
-    return " Intervals across: " + " ".join(named_intervals)
+    return " Intervals across: " + " ".join(named_intervals) + f" (total: {len(named_intervals)})"
 
 def fret_separator():
     result = "    ||---------------------------------------------" \
