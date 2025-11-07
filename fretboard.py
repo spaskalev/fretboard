@@ -39,17 +39,17 @@ starting_note = ''
 
 def fret_separator():
     result = "    ||---------------------------------------------" \
-             "--------------|"
+             "-----------------------------||"
     return result
 
 def fret_numbers():
     result = "    || 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  |" \
-             " 10 | 11 | 12 |"
+             " 10 | 11 | 12 | 13 | 14 | 15 ||"
     return result
 
 def fret_dots():
-    result = "    ||           *         *         * " \
-             "             *         *  |"
+    result = "    ||           *         *         *             " \
+             " *         **              * ||"
     return result
 
 def notes_per_string(note, count):
@@ -61,7 +61,7 @@ def notes_per_string(note, count):
     for i in range(1, count):
         result += "| {} ".format(note)
         note = next(cnotes)
-    result += "|"
+    result += "||"
     return result
 
 def degrees_per_string(starting_note, note, count):
@@ -85,7 +85,7 @@ def degrees_per_string(starting_note, note, count):
     for i in range(1, count):
         degree = next(cdegrees)
         result += "| {} ".format(degree)
-    result += "|"
+    result += "||"
     return result
 
 def to_note(candidate):
@@ -98,9 +98,6 @@ def to_note(candidate):
     raise Exception("Unknown note")
 
 def main():
-    if sys.argv[1] == "-d":
-        use_degrees = True
-        sys.argv[1] = sys.argv[2]
  
     sharp = False
     input = []
@@ -120,22 +117,22 @@ def main():
     print(fret_numbers())
     print(fret_separator())
     for note in input[::-1]:
-        print(notes_per_string(note, 13))
+        print(notes_per_string(note, 16))
     print(fret_separator())
     print(fret_dots())
     print(fret_separator())
 
-    if use_degrees:
-        print()
-        starting_note = input[0]
-        print(fret_separator())
-        print(fret_numbers())
-        print(fret_separator())
-        for note in input[::-1]:
-            print(degrees_per_string(starting_note, note, 13))
-        print(fret_separator())
-        print(fret_dots())
-        print(fret_separator())
+    print()
+
+    starting_note = input[0]
+    print(fret_separator())
+    print(fret_numbers())
+    print(fret_separator())
+    for note in input[::-1]:
+        print(degrees_per_string(starting_note, note, 16))
+    print(fret_separator())
+    print(fret_dots())
+    print(fret_separator())
 
 if __name__ == "__main__":
     main()
