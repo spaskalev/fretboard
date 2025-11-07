@@ -34,8 +34,67 @@ degrees = [
     "7 ",
 ]
 
-use_degrees = False
-starting_note = ''
+intervals = [
+    "P1",
+    "m2",
+    "M2",
+    "m3",
+    "M3",
+    "P4",
+    "TT",
+    "P5",
+    "m6",
+    "M6",
+    "m7",
+    "M7",
+    "P8",
+    "m9",
+    "M9",
+    "m10",
+    "M10",
+    "P11",
+    "TT'",
+    "P12",
+    "m13",
+    "M13",
+    "m14",
+    "M14",
+    "P15",
+    "m16",
+    "M16",
+    "m17",
+    "M16",
+    "P18",
+    "TT''",
+    "P19",
+    "m20",
+    "M20",
+    "m21",
+    "M21",
+    "P22",
+]
+
+def note_distance(note_tuple):
+    index1 = notes.index(note_tuple[0])
+    index2 = notes.index(note_tuple[1])
+    diff = index2 - index1
+    if diff < 0:
+        diff = 12 + diff
+    return diff
+
+def get_intervals(note_input):
+    distances = [x for x in map(note_distance, zip(note_input, note_input[1:]))]
+    all_distances = set()
+    while len(distances) > 0:
+        acc = 0
+        for i in distances:
+            acc += i
+            all_distances.add(acc)
+        del distances[0]
+    ordered_distances = [x for x in all_distances]
+    ordered_distances.sort()
+    named_intervals = [intervals[x] for x in ordered_distances]
+    return " Intervals across: " + " ".join(named_intervals)
 
 def fret_separator():
     result = "    ||---------------------------------------------" \
@@ -65,17 +124,10 @@ def notes_per_string(note, count):
     return result
 
 def degrees_per_string(starting_note, note, count):
-    sindex = notes.index(starting_note)
-    cindex = notes.index(note)
-
-    index = 0
-    if sindex > cindex:
-        index = 12 - (sindex - cindex)
-    if cindex > sindex:
-        index = cindex - sindex
-
+    index = note_distance((starting_note, note))
     degree = ''
     cdegrees = itertools.cycle(degrees)
+
     for i in range(1, index+1):
         degree = next(cdegrees)
         pass
@@ -133,6 +185,10 @@ def main():
     print(fret_separator())
     print(fret_dots())
     print(fret_separator())
+
+    print()
+
+    print(get_intervals(input))
 
 if __name__ == "__main__":
     main()
