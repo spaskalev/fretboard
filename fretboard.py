@@ -82,7 +82,7 @@ def note_distance(note_tuple):
         diff = 12 + diff
     return diff
 
-def get_intervals(note_input):
+def print_intervals(note_input):
     distances = [x for x in map(note_distance, zip(note_input, note_input[1:]))]
     all_distances = set()
     while len(distances) > 0:
@@ -94,7 +94,11 @@ def get_intervals(note_input):
     ordered_distances = [x for x in all_distances]
     ordered_distances.sort()
     named_intervals = [intervals[x] for x in ordered_distances]
-    return " Intervals across: " + " ".join(named_intervals) + f" (total: {len(named_intervals)})"
+    # Ignore the perfect unison here, we're not interested that it is missing
+    missing_intervals = [x for x in range(1, ordered_distances[-1]) if x not in ordered_distances]
+    missing_names = [intervals[x] for x in missing_intervals]
+    print(" Available intervals:  " + " ".join(named_intervals) + f" (total: {len(named_intervals)})")
+    print(" Missing ones:         " + " ".join(missing_names))
 
 def fret_separator():
     result = "    ||---------------------------------------------" \
@@ -188,7 +192,7 @@ def main():
 
     print()
 
-    print(get_intervals(input))
+    print_intervals(input)
 
 if __name__ == "__main__":
     main()
