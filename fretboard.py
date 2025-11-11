@@ -41,8 +41,12 @@ degree_masks = {
     "Minor scale"     : 0b010110101101,
     "Minor pentatonic": 0b010010101001,
     "Blues scale"     : 0b010011101001,
-    "Whole tone"      : 0b010101010101,
+    "Myxolydian mode" : 0b101010110101,
     "Dorian mode"     : 0b011010101101,
+    "Phrygian mode"   : 0b010110101011,
+    "Lydian mode"     : 0b101011010101,
+    "Locrian mode"    : 0b010101101011,
+    "Whole tone"      : 0b010101010101,
 }
 
 intervals = [
