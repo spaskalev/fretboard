@@ -34,6 +34,17 @@ degrees = [
     "7 ",
 ]
 
+degree_masks = {
+    "Chromatic scale" : 0b111111111111,
+    "Major scale"     : 0b101010110101,
+    "Major pentatonic": 0b001010010101,
+    "Minor scale"     : 0b010110101101,
+    "Minor pentatonic": 0b010010101001,
+    "Blues scale"     : 0b010011101001,
+    "Whole tone"      : 0b010101010101,
+    "Dorian mode"     : 0b011010101101,
+}
+
 intervals = [
     "P1",
     "m2",
@@ -134,7 +145,7 @@ def notes_per_string(note, count):
     result += "|"
     return result
 
-def degrees_per_string(starting_note, note, count):
+def degrees_per_string(starting_note, note, count, mask):
     index = note_distance((starting_note, note))
     degree = ''
     cdegrees = itertools.cycle(degrees)
@@ -143,10 +154,16 @@ def degrees_per_string(starting_note, note, count):
         degree = next(cdegrees)
         pass
 
-    degree = next(cdegrees)
+    def masked():
+        degree = next(cdegrees)
+        if (1 << degrees.index(degree)) & mask:
+            return degree
+        return "  "
+
+    degree = next(cdegrees) # no mask for open strings
     result = " {} ".format(degree)
     for i in range(1, count):
-        degree = next(cdegrees)
+        degree = masked()
         result += "| {} ".format(degree)
     result += "|"
     return result
@@ -176,6 +193,7 @@ def main():
         except:
             pass
 
+    print(" All notes")
     print(fret_header())
     print(fret_numbers())
     print(fret_separator())
@@ -183,15 +201,16 @@ def main():
         print(notes_per_string(note, 16))
     print(fret_footer())
 
-    print()
-
     starting_note = input[0]
-    print(fret_header())
-    print(fret_numbers())
-    print(fret_separator())
-    for note in input[::-1]:
-        print(degrees_per_string(starting_note, note, 16))
-    print(fret_footer())
+    for key, mask in degree_masks.items():
+        print()
+        print(" " + key)
+        print(fret_header())
+        print(fret_numbers())
+        print(fret_separator())
+        for note in input[::-1]:
+            print(degrees_per_string(starting_note, note, 16, mask))
+        print(fret_footer())
 
     print()
 
