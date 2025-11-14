@@ -105,6 +105,8 @@ def note_distance(note_tuple):
 
 def print_intervals(note_input):
     distances = [x for x in map(note_distance, zip(note_input, note_input[1:]))]
+    if len(distances) == 0:
+        return
     all_distances = set()
     while len(distances) > 0:
         acc = 0
@@ -123,23 +125,27 @@ def print_intervals(note_input):
 
 def fret_header():
     result = "    /----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----\\"
+             "----+----+----+----+----+----+----+----+----+----+" \
+             "----+----+----+----+----\\"
     return result
 
 def fret_footer():
     result = "    \\----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----/"
+             "----+----+----+----+----+----+----+----+----+----+" \
+             "----+----+----+----+----/"
     return result
 
 
 def fret_separator():
     result = "    |----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----|"
+             "----+----+----+----+----+----|----+----+----+----+" \
+             "----+----+----+----+----"
     return result
 
 def fret_numbers():
     result = "    | 1  | 2  | 3* | 4  | 5* | 6  | 7* | 8  | 9  |" \
-             " 10 | 11 |*12*| 13 | 14 | 15 |"
+             " 10 | 11 |*12*| 13 | 14 | 15 | 16 | 17 | 18 | 19 |" \
+             " 20 | 21 | 22 | 23 | 24 |"
     return result
 
 
@@ -208,7 +214,7 @@ def main():
     print(fret_numbers())
     print(fret_separator())
     for note in input[::-1]:
-        print(notes_per_string(note, 16))
+        print(notes_per_string(note, 25))
     print(fret_footer())
 
     starting_note = input[0]
@@ -219,7 +225,7 @@ def main():
         print(fret_numbers())
         print(fret_separator())
         for note in input[::-1]:
-            print(degrees_per_string(starting_note, note, 16, mask))
+            print(degrees_per_string(starting_note, note, 25, mask))
         print(fret_footer())
 
     print()
