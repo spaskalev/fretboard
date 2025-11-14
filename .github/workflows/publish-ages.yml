@@ -35,7 +35,7 @@ jobs:
           python scripts/generate_pages.py
 
       - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./docs
 
