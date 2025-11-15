@@ -9,6 +9,7 @@ import subprocess
 import sys
 import csv
 import html
+import re
 from typing import List, Dict
 
 TUNINGS_FILE = "tunings.csv"
@@ -38,7 +39,6 @@ h1, h2 { margin-top: 1.25rem; }
 <body>
 <h1>Lap steel tuning charts</h1>
 """
-
 HTML_TEMPLATE_TAIL = """
 </body>
 </html>
@@ -85,13 +85,27 @@ def parse_tunings_csv(path: str) -> List[Dict[str, str]]:
 
     return tunings
 
-def write_section(out, tuning: Dict[str, str], stdout: str, stderr: str, returncode):
+def _make_id(base: str, index: int) -> str:
+    """Create a URL-safe, mostly human-readable id for an anchor.
+    Append the index to guarantee uniqueness.
+    """
+    slug = re.sub(r"\s+", "-", base)
+    # Keep only letters, numbers, dashes and underscores
+    slug = re.sub(r"[^A-Za-z0-9\-_]", "", slug)
+    slug = slug.strip("-_").lower()
+    if not slug:
+        slug = f"tuning-{index+1}"
+    else:
+        slug = f"{slug}-{index+1}"
+    return slug
+
+def write_section(out, tuning: Dict[str, str], stdout: str, stderr: str, returncode, section_id: str):
     notes = tuning.get("notes", "")
     name = tuning.get("name", "")
     comment = tuning.get("comment", "")
 
-    out.write('<div class="pagebreak"> </div>');
-    out.write(f'<div class="section">\n')
+    out.write('<div class="pagebreak"> </div>')
+    out.write(f'<div class="section" id="{html.escape(section_id)}">\n')
     out.write(f'<div class="tuning-header">\n')
     # Show name (if present) and notes prominently
     if name:
@@ -121,9 +135,26 @@ def main():
 
     os.makedirs(DOCS_DIR, exist_ok=True)
 
+    # Precompute section ids to use in the table of contents and sections
+    section_ids = []
+    for i, t in enumerate(tunings):
+        base = t.get('name') or t.get('notes') or f'tuning-{i+1}'
+        section_ids.append(_make_id(base, i))
+
     with open(OUT_FILE, "w", encoding="utf-8") as out:
         out.write(HTML_TEMPLATE_HEAD)
-        for tuning in tunings:
+
+        # Write a Table of Contents linking to each tuning section
+        out.write('<nav>\n')
+        out.write('<h2>Contents</h2>\n')
+        out.write('<ul>\n')
+        for i, t in enumerate(tunings):
+            text = t.get('name') or t.get('notes') or f'Tuning {i+1}'
+            out.write(f'<li><a href="#{html.escape(section_ids[i])}">{html.escape(text)}</a></li>\n')
+        out.write('</ul>\n')
+        out.write('</nav>\n')
+
+        for i, tuning in enumerate(tunings):
             notes = tuning.get("notes", "")
             try:
                 proc = subprocess.run(
@@ -143,7 +174,7 @@ def main():
                 stderr = f"Error running fretboard.py: {e}\n"
                 returncode = None
 
-            write_section(out, tuning, stdout, stderr, returncode)
+            write_section(out, tuning, stdout, stderr, returncode, section_ids[i])
 
         out.write(HTML_TEMPLATE_TAIL)
 
