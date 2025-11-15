@@ -30,6 +30,9 @@ h1, h2 { margin-top: 1.25rem; }
 .meta { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
 .tuning-header { display:flex; gap:1rem; align-items:baseline; flex-wrap:wrap; }
 .tuning-notes { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-weight:600; }
+@media print {
+    .pagebreak { page-break-before: always; } /* page-break-after works, as well */
+}
 </style>
 </head>
 <body>
@@ -87,6 +90,7 @@ def write_section(out, tuning: Dict[str, str], stdout: str, stderr: str, returnc
     name = tuning.get("name", "")
     comment = tuning.get("comment", "")
 
+    out.write('<div class="pagebreak"> </div>');
     out.write(f'<div class="section">\n')
     out.write(f'<div class="tuning-header">\n')
     # Show name (if present) and notes prominently
