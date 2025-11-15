@@ -19,6 +19,14 @@ notes = [
     "G#",
 ]
 
+sharps_to_flats = {
+    "C#": "Db",
+    "D#": "Eb",
+    "F#": "Gb",
+    "G#": "Ab",
+    "A#": "Bb",
+}
+
 degrees = [
     "1 ",
     "b2",
@@ -139,7 +147,7 @@ def fret_footer():
 def fret_separator():
     result = "    |----+----+----+----+----+----+----+----+----+" \
              "----+----+----+----+----+----|----+----+----+----+" \
-             "----+----+----+----+----"
+             "----+----+----+----+----|"
     return result
 
 def fret_numbers():
@@ -149,13 +157,15 @@ def fret_numbers():
     return result
 
 
-def notes_per_string(note, count):
+def notes_per_string(note, count, use_flats=False):
     result = " {} ".format(note)
     cnotes = itertools.cycle(notes)
     while note != next(cnotes):
         pass
     note = next(cnotes)
     for i in range(1, count):
+        if use_flats and '#' in note:
+            note = sharps_to_flats[note]
         result += "| {} ".format(note)
         note = next(cnotes)
     result += "|"
@@ -209,12 +219,21 @@ def main():
         except:
             pass
 
-    print(" All notes")
+    print(" All notes (sharps)")
     print(fret_header())
     print(fret_numbers())
     print(fret_separator())
     for note in input[::-1]:
         print(notes_per_string(note, 25))
+    print(fret_footer())
+
+    print()
+    print(" All notes (flats)")
+    print(fret_header())
+    print(fret_numbers())
+    print(fret_separator())
+    for note in input[::-1]:
+        print(notes_per_string(note, 25, use_flats=True))
     print(fret_footer())
 
     starting_note = input[0]
