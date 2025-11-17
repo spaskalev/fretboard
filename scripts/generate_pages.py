@@ -23,7 +23,7 @@ HTML_TEMPLATE_HEAD = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lap steel tuning charts</title>
 <style>
-body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 1rem; max-width: 960px; margin: auto; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 1rem; max-width: 1000px; margin: auto; }
 pre { background: #f8f8f8; padding: 1rem; border-radius: 6px; overflow: auto; white-space: pre-wrap; }
 h1, h2 { margin-top: 1.25rem; }
 .section { margin-bottom: 1.5rem; }
