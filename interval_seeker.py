@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 
-candidates = {}
+candidates = []
 
-for i in range(1, 7):
-  for j in range(1, 7):
-    for k in range(1, 7):
-      for l in range(1, 7):
-          distances = [i, j, k, l]
+crit = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14]
+
+starting = 2
+ending = 7
+for i in range(starting, ending):
+  for j in range(starting, ending):
+    for k in range(starting, ending):
+      for l in range(starting, ending):
+        for m in range(starting, ending):
+          distances = [i, j, k, l, m]
           all_distances = set()
 
           while len(distances) > 0:
@@ -18,10 +23,11 @@ for i in range(1, 7):
             if acc > 19:
                 break
 
-          if len(all_distances) >= 10:
-            candidates[f"{i, j, k, l}"] = all_distances
+          for check in crit:
+              if check not in all_distances:
+                  break
+          else:
+            candidates.append((f"{i, j, k, l, m}", all_distances))
 
-for key, value in candidates.items():
-    if 1 in value:
-        continue
-    print(key, value)
+for value in candidates:
+    print(value)
