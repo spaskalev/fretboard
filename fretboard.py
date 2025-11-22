@@ -131,31 +131,36 @@ def print_intervals(note_input):
     print(" Available intervals:  " + " ".join(named_intervals) + f" (total: {len(named_intervals)})")
     print(" Missing ones:         " + " ".join(missing_names))
 
-def fret_header():
-    result = "    /----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----\\"
+def fret_header(count):
+    result = "    /"
+    for i in range(1, count-1):
+        result += "----+"
+    result += "----\\"
     return result
 
-def fret_footer():
-    result = "    \\----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----/"
+def fret_footer(count):
+    result = "    \\"
+    for i in range(1, count-1):
+        result += "----+"
+    result += "----/"
     return result
 
 
-def fret_separator():
-    result = "    |----+----+----+----+----+----+----+----+----+" \
-             "----+----+----+----+----+----|----+----+----+----+" \
-             "----+----+----+----+----|"
+def fret_separator(count):
+    result = "    |"
+    for i in range(1, count-1):
+        result += "----+"
+    result += "----|"
     return result
 
-def fret_numbers():
-    result = "    | 1  | 2  | 3* | 4  | 5* | 6  | 7* | 8  | 9  |" \
-             " 10 | 11 |*12*| 13 | 14 | 15 | 16 | 17 | 18 | 19 |" \
-             " 20 | 21 | 22 | 23 | 24 |"
+def fret_numbers(count):
+    result = "    |"
+    for i in range (1, count):
+        if i <= 9:
+            result += f' {i}  |'
+        else:
+            result += f' {i} |'
     return result
-
 
 def notes_per_string(note, count, use_flats=False):
     result = " {} ".format(note)
@@ -205,6 +210,7 @@ def to_note(candidate):
 
 def main():
  
+    count = 16
     sharp = False
     input = []
     for c in sys.argv[1][::-1]: # read it backwards
@@ -220,32 +226,32 @@ def main():
             pass
 
     print(" All notes (sharps)")
-    print(fret_header())
-    print(fret_numbers())
-    print(fret_separator())
+    print(fret_header(count))
+    print(fret_numbers(count))
+    print(fret_separator(count))
     for note in input[::-1]:
-        print(notes_per_string(note, 25))
-    print(fret_footer())
+        print(notes_per_string(note, count))
+    print(fret_footer(count))
 
     print()
     print(" All notes (flats)")
-    print(fret_header())
-    print(fret_numbers())
-    print(fret_separator())
+    print(fret_header(count))
+    print(fret_numbers(count))
+    print(fret_separator(count))
     for note in input[::-1]:
-        print(notes_per_string(note, 25, use_flats=True))
-    print(fret_footer())
+        print(notes_per_string(note, count, use_flats=True))
+    print(fret_footer(count))
 
     starting_note = input[0]
     for key, mask in degree_masks.items():
         print()
         print(" " + key)
-        print(fret_header())
-        print(fret_numbers())
-        print(fret_separator())
+        print(fret_header(count))
+        print(fret_numbers(count))
+        print(fret_separator(count))
         for note in input[::-1]:
-            print(degrees_per_string(starting_note, note, 25, mask))
-        print(fret_footer())
+            print(degrees_per_string(starting_note, note, count, mask))
+        print(fret_footer(count))
 
     print()
 
