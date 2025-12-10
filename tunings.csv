@@ -1,12 +1,12 @@
 notes,name,comment
 CEGACE,C6,"The classic lap steel tuning. For C6 strings."
 GACEGACE,C6-8,"C6 for 8 strings"
+EAC#GCE,C6/A7,"C6/A7 for regular guitar strings"
 C#EGA#CD,Leavitt tuning,"All intervals and a lot of jazz voicings"
 CDEGA#C#,Reverse Leavitt,"What if we turn Leavitt around"
 GBD#F#ACDE,Leavitt tuning (extra bass),"All intervals and a lot of jazz voicings"
 CEGABD,Hexatonic,"A lot of chords, good for jazz. For C6 strings."
 CEGABDF,Hexatonic+,"One more minor third on top for straight dom7 chords"
-C#EGABD,Hexatonic-,"Diminished options at the bottom"
 A#CC#EGABD,Hexatonic++,"Hexatonic-Leavitt hybrid"
 C#EGABD,Almost hexatonic,"Power chords"
 BD#F#AC#E,B11,"Sand by Jerry Byrd"
