@@ -149,7 +149,7 @@ def main():
         out.write('<h2>Contents</h2>\n')
         out.write('<ul>\n')
         for i, t in enumerate(tunings):
-            text = t.get('name') or t.get('notes') or f'Tuning {i+1}'
+            text = t.get('name') + '(' + t.get('notes') + ')'
             out.write(f'<li><a href="#{html.escape(section_ids[i])}">{html.escape(text)}</a></li>\n')
         out.write('</ul>\n')
         out.write('</nav>\n')
